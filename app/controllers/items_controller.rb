@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# app/controllers/items_controller.rb
+# Controller for items
 class ItemsController < ApplicationController
   before_action :set_wish_list
   before_action :set_wish_list_item, only: %i[show update destroy]

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# app/controllers/wish_lists_controller.rb
+# controller for wish lists
 class WishListsController < ApplicationController
   before_action :set_user
   before_action :set_user_wish_list, only: %i[show update destroy]
