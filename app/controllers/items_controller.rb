@@ -36,7 +36,7 @@ class ItemsController < ApplicationController
 
   def item_params
     # whitelist params
-    params.permit(:name)
+    params.permit(:name, :bought, :original_price, :bid, :wish_list_id, :product_id)
   end
 
   def set_item
