@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe 'wish_lists API', type: :request do
   # initialize test data
-  let!(:items) { create_list(:item, 10) }
-  let(:wish_list_id) { items.first.id }
+  let!(:wish_lists) { create_list(:wish_list, 10) }
+  let(:wish_list_id) { wish_lists.first.id }
 
   # Test suite for GET /wish_lists
   describe 'GET /wish_lists' do
