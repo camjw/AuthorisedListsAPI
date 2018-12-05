@@ -66,10 +66,15 @@ RSpec.describe 'Items API' do
 
   # Test suite for PUT /wish_lists/:wish_list_id/items
   describe 'POST /wish_lists/:wish_list_id/items' do
-    let(:valid_attributes) { { name: 'Stuff', bought: 0, original_price: 100, bid: 10 } }
+    let(:valid_attributes) do
+      { name: 'Stuff', bought: 0, original_price: 100, bid: 10 }
+    end
 
     context 'when request attributes are valid' do
-      before { post "/wish_lists/#{wish_list_id}/items", params: valid_attributes }
+      before do
+        post "/wish_lists/#{wish_list_id}/items",
+             params: valid_attributes
+      end
 
       it 'returns status code 201' do
         expect(response).to have_http_status(201)
@@ -93,7 +98,10 @@ RSpec.describe 'Items API' do
   describe 'PUT /wish_lists/:wish_list_id/items/:id' do
     let(:valid_attributes) { { name: 'Mozart' } }
 
-    before { put "/wish_lists/#{wish_list_id}/items/#{id}", params: valid_attributes }
+    before do
+      put "/wish_lists/#{wish_list_id}/items/#{id}",
+          params: valid_attributes
+    end
 
     context 'when item exists' do
       it 'returns status code 204' do

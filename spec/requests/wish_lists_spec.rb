@@ -93,7 +93,10 @@ RSpec.describe 'WishLists API' do
   describe 'PUT /users/:user_id/wish_lists/:id' do
     let(:valid_attributes) { { name: 'Mozart' } }
 
-    before { put "/users/#{user_id}/wish_lists/#{id}", params: valid_attributes }
+    before do
+      put "/users/#{user_id}/wish_lists/#{id}",
+          params: valid_attributes
+    end
 
     context 'when wish_list exists' do
       it 'returns status code 204' do

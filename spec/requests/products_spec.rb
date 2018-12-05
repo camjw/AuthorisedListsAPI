@@ -52,7 +52,10 @@ RSpec.describe 'Products API', type: :request do
   # Test suite for POST /products
   describe 'POST /products' do
     # valid payload
-    let(:valid_attributes) { { name: 'Toothbrush', url: 'www.google.com', producer: 'Google', current_price: 50 } }
+    let(:valid_attributes) do
+      { name: 'Toothbrush', url: 'www.google.com',
+        producer: 'Google', current_price: 50 }
+    end
 
     context 'when the request is valid' do
       before { post '/products', params: valid_attributes }
@@ -82,7 +85,10 @@ RSpec.describe 'Products API', type: :request do
 
   # Test suite for PUT /products/:id
   describe 'PUT /products/:id' do
-    let(:valid_attributes) { { name: 'Shopping', url: 'www.google.com', producer: 'Google', current_price: '£100' } }
+    let(:valid_attributes) do
+      { name: 'Shopping', url: 'www.google.com',
+        producer: 'Google', current_price: '£100' }
+    end
 
     context 'when the record exists' do
       before { put "/products/#{product_id}", params: valid_attributes }
