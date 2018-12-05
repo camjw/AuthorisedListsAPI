@@ -1,32 +1,31 @@
-# frozen_string_literal: true
-
+# app/controllers/wish_lists_controller.rb
 class WishListsController < ApplicationController
-  before_action :set_wish_list, only: %i[show update destroy]
+  before_action :set_user
+  before_action :set_user_wish_list, only: [:show, :update, :destroy]
 
-  # GET /wish_lists
+  # GET /users/:user_id/wish_lists
   def index
-    @wish_lists = WishList.all
-    json_response(@wish_lists)
+    json_response(@user.wish_lists)
   end
 
-  # POST /wish_lists
-  def create
-    @wish_list = WishList.create!(wish_list_params)
-    json_response(@wish_list, :created)
-  end
-
-  # GET /wish_lists/:id
+  # GET /users/:user_id/wish_lists/:id
   def show
     json_response(@wish_list)
   end
 
-  # PUT /wish_lists/:id
+  # POST /users/:user_id/wish_lists
+  def create
+    @user.wish_lists.create!(wish_list_params)
+    json_response(@user, :created)
+  end
+
+  # PUT /users/:user_id/wish_lists/:id
   def update
     @wish_list.update(wish_list_params)
     head :no_content
   end
 
-  # DELETE /wish_lists/:id
+  # DELETE /users/:user_id/wish_lists/:id
   def destroy
     @wish_list.destroy
     head :no_content
@@ -35,11 +34,14 @@ class WishListsController < ApplicationController
   private
 
   def wish_list_params
-    # whitelist params
     params.permit(:name, :viewable)
   end
 
-  def set_wish_list
-    @wish_list = WishList.find(params[:id])
+  def set_user
+    @user = User.find(params[:user_id])
+  end
+
+  def set_user_wish_list
+    @wish_list = @user.wish_lists.find_by!(id: params[:id]) if @user
   end
 end
