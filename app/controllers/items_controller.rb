@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 # app/controllers/items_controller.rb
 class ItemsController < ApplicationController
   before_action :set_wish_list
-  before_action :set_wish_list_item, only: [:show, :update, :destroy]
+  before_action :set_wish_list_item, only: %i[show update destroy]
 
   # GET /wish_lists/:wish_list_id/items
   def index
