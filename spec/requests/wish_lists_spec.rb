@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'wish_lists API', type: :request do
@@ -44,7 +46,7 @@ RSpec.describe 'wish_lists API', type: :request do
       end
 
       it 'returns a not found message' do
-        expect(response.body).to match(/Couldn't find wish_list/)
+        expect(response.body).to include("Couldn't find WishList")
       end
     end
   end
@@ -67,7 +69,7 @@ RSpec.describe 'wish_lists API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/wish_lists', params: { } }
+      before { post '/wish_lists', params: {} }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -75,7 +77,7 @@ RSpec.describe 'wish_lists API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/Validation failed: Name by can't be blank/)
+          .to include("Validation failed: Name can't be blank")
       end
     end
   end

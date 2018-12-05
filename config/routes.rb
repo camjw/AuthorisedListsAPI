@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     resources :wish_lists do
       resources :items
     end
-  end 
+  end
   resources :wish_lists do
     resources :items
   end

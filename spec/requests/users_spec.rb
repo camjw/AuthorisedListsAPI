@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Users API', type: :request do
   # initialize test data
   let!(:users) { create_list(:user, 10) }
@@ -73,7 +75,7 @@ RSpec.describe 'Users API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match("{\"message\":\"Validation failed: Name can't be blank\"}")
+          .to include("Validation failed: Name can't be blank")
       end
     end
   end
