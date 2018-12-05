@@ -52,13 +52,13 @@ RSpec.describe 'wish_lists API', type: :request do
   # Test suite for POST /wish_lists
   describe 'POST /wish_lists' do
     # valid payload
-    let(:valid_attributes) { { title: 'Learn Elm', created_by: '1' } }
+    let(:valid_attributes) { { name: 'Learn Elm' } }
 
     context 'when the request is valid' do
       before { post '/wish_lists', params: valid_attributes }
 
       it 'creates a wish_list' do
-        expect(json['title']).to eq('Learn Elm')
+        expect(json['name']).to eq('Learn Elm')
       end
 
       it 'returns status code 201' do
@@ -67,7 +67,7 @@ RSpec.describe 'wish_lists API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/wish_lists', params: { title: 'Foobar' } }
+      before { post '/wish_lists', params: { } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -75,14 +75,14 @@ RSpec.describe 'wish_lists API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/Validation failed: Created by can't be blank/)
+          .to match(/Validation failed: Name by can't be blank/)
       end
     end
   end
 
   # Test suite for PUT /wish_lists/:id
   describe 'PUT /wish_lists/:id' do
-    let(:valid_attributes) { { title: 'Shopping' } }
+    let(:valid_attributes) { { name: 'Shopping' } }
 
     context 'when the record exists' do
       before { put "/wish_lists/#{wish_list_id}", params: valid_attributes }
