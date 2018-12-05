@@ -13,3 +13,7 @@ Metrics/BlockLength:
     - '**/*.rake'
     - 'spec/**/*.rb'
     - 'config/routes.rb'
+
+Documentation:
+  Exclude:
+    - 'db/migrate/**/*'
