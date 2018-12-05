@@ -31,6 +31,8 @@ ActiveRecord::Migration.maintain_test_schema!
 
 require 'factory_bot'
 
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+
 RSpec.configure do |config|
   Shoulda::Matchers.configure do |configuration|
     configuration.integrate do |with|
@@ -38,6 +40,8 @@ RSpec.configure do |config|
       with.library :rails
     end
   end
+  config.include RequestSpecHelper, type: :request
+
 
   config.include FactoryBot::Syntax::Methods
 
