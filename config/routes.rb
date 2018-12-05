@@ -2,15 +2,10 @@
 
 Rails.application.routes.draw do
   resources :users do
-    resources :wish_lists do
-      resources :items
-    end
+    resources :wish_lists
   end
   resources :wish_lists do
     resources :items
   end
-  resources :items
-  resources :products do
-    resources :items
-  end
+  resources :products
 end
