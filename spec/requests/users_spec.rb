@@ -65,7 +65,7 @@ RSpec.describe 'Users API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/users', params: { bid: 'Foobar' } }
+      before { post '/users', params: { email: 'Foobar' } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -73,7 +73,7 @@ RSpec.describe 'Users API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/Validation failed: Created by can't be blank/)
+          .to match("{\"message\":\"Validation failed: Name can't be blank\"}")
       end
     end
   end
