@@ -54,7 +54,7 @@ RSpec.describe 'wish_lists API', type: :request do
   # Test suite for POST /wish_lists
   describe 'POST /wish_lists' do
     # valid payload
-    let(:valid_attributes) { { name: 'Learn Elm' } }
+    let(:valid_attributes) { { name: 'Learn Elm', viewable: true } }
 
     context 'when the request is valid' do
       before { post '/wish_lists', params: valid_attributes }
