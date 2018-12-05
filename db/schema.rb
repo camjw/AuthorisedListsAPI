@@ -10,21 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_05_191726) do
+ActiveRecord::Schema.define(version: 2018_12_05_193802) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "item_product_foreign_keys", force: :cascade do |t|
+  end
+
   create_table "items", force: :cascade do |t|
     t.string "name"
-    t.boolean "bought"
+    t.integer "bought"
     t.float "original_price"
-    t.float "price"
     t.float "bid"
     t.bigint "wish_list_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "product_id"
     t.index ["wish_list_id"], name: "index_items_on_wish_list_id"
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string "name"
+    t.string "url"
+    t.string "producer"
+    t.float "current_price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -43,6 +55,7 @@ ActiveRecord::Schema.define(version: 2018_12_05_191726) do
     t.index ["user_id"], name: "index_wish_lists_on_user_id"
   end
 
+  add_foreign_key "items", "products"
   add_foreign_key "items", "wish_lists"
   add_foreign_key "wish_lists", "users"
 end
