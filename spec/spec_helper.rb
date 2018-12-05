@@ -1,4 +1,14 @@
 # frozen_string_literal: true
+require 'simplecov'
+require 'simplecov-console'
+SimpleCov.formatter = SimpleCov::Formatter::Console
+SimpleCov.start
+
+SimpleCov.at_exit do
+  SimpleCov.result.format!
+  SimpleCov.minimum_coverage 95
+  SimpleCov.minimum_coverage_by_file 90
+end
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
