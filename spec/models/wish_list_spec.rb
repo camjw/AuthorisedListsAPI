@@ -1,5 +1,8 @@
+# spec/models/todo_spec.rb
 require 'rails_helper'
-
+# Test suite for the Todo model
 RSpec.describe WishList, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it 'has lots of items' do
+    expect(subject).to have_many(:items)
+  end
 end
