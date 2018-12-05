@@ -1,8 +1,7 @@
-# spec/models/todo_spec.rb
+require 'spec_helper'
 require 'rails_helper'
-# Test suite for the Todo model
+
 RSpec.describe WishList, type: :model do
-  it 'has lots of items' do
-    expect(subject).to have_many(:items)
-  end
+  it { should belong_to(:user) }
+  it { should have_many(:items) }
 end
