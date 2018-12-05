@@ -12,3 +12,4 @@ Metrics/BlockLength:
     - '**/*.rake'
     - 'spec/**/*.rb'
     - 'config/routes.rb'
+    - 'db/schema.rb'

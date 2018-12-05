@@ -32,8 +32,8 @@ ActiveRecord::Migration.maintain_test_schema!
 require 'factory_bot'
 
 RSpec.configure do |config|
-  Shoulda::Matchers.configure do |config|
-    config.integrate do |with|
+  Shoulda::Matchers.configure do |configuration|
+    configuration.integrate do |with|
       with.test_framework :rspec
       with.library :rails
     end
