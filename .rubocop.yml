@@ -4,6 +4,7 @@ AllCops:
   Exclude:
     - 'bin/**/*'
     - 'vendor/**/*'
+    - 'db/schema.rb'
   TargetRubyVersion: 2.5
 
 Metrics/BlockLength:
@@ -12,4 +13,3 @@ Metrics/BlockLength:
     - '**/*.rake'
     - 'spec/**/*.rb'
     - 'config/routes.rb'
-    - 'db/schema.rb'
