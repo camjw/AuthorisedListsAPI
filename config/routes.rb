@@ -10,4 +10,7 @@ Rails.application.routes.draw do
     resources :items
   end
   resources :items
+  resources :products do
+    resources :items
+  end
 end
