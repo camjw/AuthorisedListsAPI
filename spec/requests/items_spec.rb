@@ -1,43 +1,56 @@
-# frozen_string_literal: true
+# spec/requests/items_spec.rb
+require 'rails_helper'
 
-RSpec.describe 'Items API', type: :request do
-  # initialize test data
-  let!(:items) { create_list(:item, 10) }
-  let(:item_id) { items.first.id }
+RSpec.describe 'Items API' do
+  # Initialize the test data
+  let!(:wish_list) { create(:wish_list) }
+  let!(:items) { create_list(:item, 20, wish_list_id: wish_list.id) }
+  let(:wish_list_id) { wish_list.id }
+  let(:id) { items.first.id }
 
-  # Test suite for GET /items
-  describe 'GET /items' do
-    # make HTTP get request before each example
-    before { get '/items' }
+  # Test suite for GET /wish_lists/:wish_list_id/items
+  describe 'GET /wish_lists/:wish_list_id/items' do
+    before { get "/wish_lists/#{wish_list_id}/items" }
 
-    it 'returns items' do
-      # Note `json` is a custom helper to parse JSON responses
-      expect(json).not_to be_empty
-      expect(json.size).to eq(10)
-    end
-
-    it 'returns status code 200' do
-      expect(response).to have_http_status(200)
-    end
-  end
-
-  # Test suite for GET /items/:id
-  describe 'GET /items/:id' do
-    before { get "/items/#{item_id}" }
-
-    context 'when the record exists' do
-      it 'returns the item' do
-        expect(json).not_to be_empty
-        expect(json['id']).to eq(item_id)
-      end
-
+    context 'when wish_list exists' do
       it 'returns status code 200' do
         expect(response).to have_http_status(200)
       end
+
+      it 'returns all wish_list items' do
+        expect(json.size).to eq(20)
+      end
     end
 
-    context 'when the record does not exist' do
-      let(:item_id) { 100 }
+    context 'when wish_list does not exist' do
+      let(:wish_list_id) { 0 }
+
+      it 'returns status code 404' do
+        expect(response).to have_http_status(404)
+      end
+
+      it 'returns a not found message' do
+        expect(response.body).to match(/Couldn't find WishList/)
+      end
+    end
+  end
+
+  # Test suite for GET /wish_lists/:wish_list_id/items/:id
+  describe 'GET /wish_lists/:wish_list_id/items/:id' do
+    before { get "/wish_lists/#{wish_list_id}/items/#{id}" }
+
+    context 'when wish_list item exists' do
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+
+      it 'returns the item' do
+        expect(json['id']).to eq(id)
+      end
+    end
+
+    context 'when wish_list item does not exist' do
+      let(:id) { 0 }
 
       it 'returns status code 404' do
         expect(response).to have_http_status(404)
@@ -49,57 +62,64 @@ RSpec.describe 'Items API', type: :request do
     end
   end
 
-  # Test suite for POST /items
-  describe 'POST /items' do
-    # valid payload
-    let(:valid_attributes) { { name: 'Toothbrush', bought: 0, original_price: 100, bid: 50 } }
+  # Test suite for PUT /wish_lists/:wish_list_id/items
+  describe 'POST /wish_lists/:wish_list_id/items' do
+    let(:valid_attributes) { { name: 'Stuff', bought: 0, original_price: 100, bid: 10 } }
 
-    context 'when the request is valid' do
-      before { post '/items', params: valid_attributes }
-
-      it 'creates a item' do
-        expect(json['name']).to eq('Toothbrush')
-      end
+    context 'when request attributes are valid' do
+      before { post "/wish_lists/#{wish_list_id}/items", params: valid_attributes }
 
       it 'returns status code 201' do
         expect(response).to have_http_status(201)
       end
     end
 
-    context 'when the request is invalid' do
-      before { post '/items', params: { email: 'Foobar' } }
+    context 'when an invalid request' do
+      before { post "/wish_lists/#{wish_list_id}/items", params: {} }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
       end
 
-      it 'returns a validation failure message' do
-        expect(response.body)
-          .to include("Validation failed: Name can't be blank")
+      it 'returns a failure message' do
+        expect(response.body).to match(/Validation failed: Name can't be blank/)
       end
     end
   end
 
-  # Test suite for PUT /items/:id
-  describe 'PUT /items/:id' do
-    let(:valid_attributes) { { name: 'Shopping' } }
+  # Test suite for PUT /wish_lists/:wish_list_id/items/:id
+  describe 'PUT /wish_lists/:wish_list_id/items/:id' do
+    let(:valid_attributes) { { name: 'Mozart' } }
 
-    context 'when the record exists' do
-      before { put "/items/#{item_id}", params: valid_attributes }
+    before { put "/wish_lists/#{wish_list_id}/items/#{id}", params: valid_attributes }
 
-      it 'updates the record' do
-        expect(response.body).to be_empty
-      end
-
+    context 'when item exists' do
       it 'returns status code 204' do
         expect(response).to have_http_status(204)
       end
+
+      it 'updates the item' do
+        updated_item = Item.find(id)
+        expect(updated_item.name).to match(/Mozart/)
+      end
+    end
+
+    context 'when the item does not exist' do
+      let(:id) { 0 }
+
+      it 'returns status code 404' do
+        expect(response).to have_http_status(404)
+      end
+
+      it 'returns a not found message' do
+        expect(response.body).to match(/Couldn't find Item/)
+      end
     end
   end
 
-  # Test suite for DELETE /items/:id
-  describe 'DELETE /items/:id' do
-    before { delete "/items/#{item_id}" }
+  # Test suite for DELETE /wish_lists/:id
+  describe 'DELETE /wish_lists/:id' do
+    before { delete "/wish_lists/#{wish_list_id}/items/#{id}" }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)
