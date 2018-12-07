@@ -40,8 +40,8 @@ RSpec.configure do |config|
       with.library :rails
     end
   end
-  config.include RequestSpecHelper, type: :request
-
+  config.include RequestSpecHelper
+  config.include ControllerSpecHelper
   config.include FactoryBot::Syntax::Methods
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
