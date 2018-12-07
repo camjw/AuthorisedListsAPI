@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 require_relative '../../app/lib/message'
 
 RSpec.describe Message do
-
   describe 'The singleton methods' do
     it 'has a not found method' do
-      expect(Message.not_found).to eq "Sorry, record not found."
+      expect(Message.not_found).to eq 'Sorry, record not found.'
     end
 
     it 'has a unauthorized method' do

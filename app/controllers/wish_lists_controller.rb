@@ -2,10 +2,10 @@
 
 # controller for wish lists
 class WishListsController < ApplicationController
-  before_action :set_wish_list, only: [:show, :update, :destroy]
+  before_action :set_wish_list, only: %i[show update destroy]
 
-    # GET /users/:user_id/wish_lists
-    # GET /wish_lists
+  # GET /users/:user_id/wish_lists
+  # GET /wish_lists
   def index
     # get current user wish_lists
     @wish_lists = current_user.wish_lists
