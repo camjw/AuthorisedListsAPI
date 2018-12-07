@@ -2,32 +2,35 @@
 
 # controller for wish lists
 class WishListsController < ApplicationController
-  before_action :set_user
-  before_action :set_user_wish_list, only: %i[show update destroy]
+  before_action :set_wish_list, only: [:show, :update, :destroy]
 
-  # GET /users/:user_id/wish_lists
+    # GET /users/:user_id/wish_lists
+    # GET /wish_lists
   def index
-    json_response(@user.wish_lists)
+    # get current user wish_lists
+    @wish_lists = current_user.wish_lists
+    json_response(@wish_lists)
   end
 
-  # GET /users/:user_id/wish_lists/:id
+  # GET /wish_lists/:id
   def show
     json_response(@wish_list)
   end
 
-  # POST /users/:user_id/wish_lists
+  # POST /wish_lists
   def create
-    @user.wish_lists.create!(wish_list_params)
-    json_response(@user, :created)
+    # create wish_lists belonging to current user
+    @wish_list = current_user.wish_lists.create!(wish_list_params)
+    json_response(@wish_list, :created)
   end
 
-  # PUT /users/:user_id/wish_lists/:id
+  # PUT /wish_lists/:id
   def update
     @wish_list.update(wish_list_params)
     head :no_content
   end
 
-  # DELETE /users/:user_id/wish_lists/:id
+  # DELETE /wish_lists/:id
   def destroy
     @wish_list.destroy
     head :no_content
@@ -35,15 +38,12 @@ class WishListsController < ApplicationController
 
   private
 
+  # remove `created_by` from list of permitted parameters
   def wish_list_params
     params.permit(:name, :viewable)
   end
 
-  def set_user
-    @user = User.find(params[:user_id])
-  end
-
-  def set_user_wish_list
-    @wish_list = @user.wish_lists.find_by!(id: params[:id]) if @user
+  def set_wish_list
+    @wish_list = WishList.find(params[:id])
   end
 end
