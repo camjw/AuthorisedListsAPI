@@ -5,14 +5,16 @@ require 'rails_helper'
 
 RSpec.describe 'Items API' do
   # Initialize the test data
-  let!(:wish_list) { create(:wish_list) }
+  let(:user) { create(:user) }
+  let!(:wish_list) { create(:wish_list, created_by: user.id) }
   let!(:items) { create_list(:item, 20, wish_list_id: wish_list.id) }
   let(:wish_list_id) { wish_list.id }
   let(:id) { items.first.id }
+  let(:headers) { valid_headers }
 
   # Test suite for GET /wish_lists/:wish_list_id/items
   describe 'GET /wish_lists/:wish_list_id/items' do
-    before { get "/wish_lists/#{wish_list_id}/items" }
+    before { get "/wish_lists/#{wish_list_id}/items", headers: headers }
 
     context 'when wish_list exists' do
       it 'returns status code 200' do
@@ -39,7 +41,7 @@ RSpec.describe 'Items API' do
 
   # Test suite for GET /wish_lists/:wish_list_id/items/:id
   describe 'GET /wish_lists/:wish_list_id/items/:id' do
-    before { get "/wish_lists/#{wish_list_id}/items/#{id}" }
+    before { get "/wish_lists/#{wish_list_id}/items/#{id}", headers: headers }
 
     context 'when wish_list item exists' do
       it 'returns status code 200' do
@@ -67,13 +69,14 @@ RSpec.describe 'Items API' do
   # Test suite for PUT /wish_lists/:wish_list_id/items
   describe 'POST /wish_lists/:wish_list_id/items' do
     let(:valid_attributes) do
-      { name: 'Stuff', bought: 0, original_price: 100, bid: 10 }
+      { name: 'Stuff', bought: 0, original_price: 100, bid: 10 }.to_json
     end
 
     context 'when request attributes are valid' do
       before do
         post "/wish_lists/#{wish_list_id}/items",
-             params: valid_attributes
+             params: valid_attributes,
+             headers: headers
       end
 
       it 'returns status code 201' do
@@ -82,7 +85,7 @@ RSpec.describe 'Items API' do
     end
 
     context 'when an invalid request' do
-      before { post "/wish_lists/#{wish_list_id}/items", params: {} }
+      before { post "/wish_lists/#{wish_list_id}/items", params: {}, headers: headers }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -96,11 +99,12 @@ RSpec.describe 'Items API' do
 
   # Test suite for PUT /wish_lists/:wish_list_id/items/:id
   describe 'PUT /wish_lists/:wish_list_id/items/:id' do
-    let(:valid_attributes) { { name: 'Mozart' } }
+    let(:valid_attributes) { { name: 'Mozart' }.to_json }
 
     before do
       put "/wish_lists/#{wish_list_id}/items/#{id}",
-          params: valid_attributes
+          params: valid_attributes,
+          headers: headers
     end
 
     context 'when item exists' do
@@ -129,7 +133,7 @@ RSpec.describe 'Items API' do
 
   # Test suite for DELETE /wish_lists/:id
   describe 'DELETE /wish_lists/:id' do
-    before { delete "/wish_lists/#{wish_list_id}/items/#{id}" }
+    before { delete "/wish_lists/#{wish_list_id}/items/#{id}", headers: headers }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)
