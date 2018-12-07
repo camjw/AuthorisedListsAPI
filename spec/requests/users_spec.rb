@@ -52,13 +52,13 @@ RSpec.describe 'Users API', type: :request do
   # Test suite for POST /users
   describe 'POST /users' do
     # valid payload
-    let(:valid_attributes) { { name: 'Learn Elm', email: 'LearnElm@mail.com' } }
+    let(:valid_attributes) { { name: 'Billy', email: 'Billy@mail.com', password_digest: '13123' } }
 
     context 'when the request is valid' do
       before { post '/users', params: valid_attributes }
 
       it 'creates a user' do
-        expect(json['name']).to eq('Learn Elm')
+        expect(json['name']).to eq('Billy')
       end
 
       it 'returns status code 201' do
@@ -75,7 +75,7 @@ RSpec.describe 'Users API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to include("Validation failed: Name can't be blank")
+          .to include("Validation failed: Password can't be blank")
       end
     end
   end
