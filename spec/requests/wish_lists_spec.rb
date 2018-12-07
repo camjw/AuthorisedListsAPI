@@ -14,7 +14,6 @@ RSpec.describe 'WishLists API', type: :request do
     before { get '/wish_lists', params: {}, headers: headers }
 
     it 'returns wish_lists' do
-      puts valid_headers
       # Note `json` is a custom helper to parse JSON responses
       expect(json).not_to be_empty
       expect(json.size).to eq(10)
