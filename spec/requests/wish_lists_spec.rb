@@ -7,6 +7,7 @@ RSpec.describe 'WishLists API', type: :request do
   let(:wish_list_id) { wish_lists.first.id }
   # authorize request
   let(:headers) { valid_headers }
+  let(:bad_headers) { invalid_headers }
 
   # Test suite for GET /wish_lists
   describe 'GET /wish_lists' do
@@ -21,6 +22,19 @@ RSpec.describe 'WishLists API', type: :request do
 
     it 'returns status code 200' do
       expect(response).to have_http_status(200)
+    end
+  end
+
+  describe 'GET /wish_lists without headers' do
+    # make HTTP get request before each example
+    before { get '/wish_lists', params: {}, headers: bad_headers }
+
+    it 'returns status code 200' do
+      expect(response).to have_http_status(422)
+    end
+
+    it 'returns a not found message' do
+      expect(response.body).to match(/Missing token/)
     end
   end
 
