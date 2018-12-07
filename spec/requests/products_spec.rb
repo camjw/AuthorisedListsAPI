@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Products API', type: :request do
+  let(:user) { create(:user) }
   # initialize test data
   let!(:products) { create_list(:product, 10) }
   let(:product_id) { products.first.id }
-
+  let(:headers) { valid_headers }
   # Test suite for GET /products
   describe 'GET /products' do
     # make HTTP get request before each example
-    before { get '/products' }
+    before { get '/products', headers: headers }
 
     it 'returns products' do
       # Note `json` is a custom helper to parse JSON responses
@@ -23,7 +24,7 @@ RSpec.describe 'Products API', type: :request do
 
   # Test suite for GET /products/:id
   describe 'GET /products/:id' do
-    before { get "/products/#{product_id}" }
+    before { get "/products/#{product_id}", headers: headers }
 
     context 'when the record exists' do
       it 'returns the product' do
@@ -54,11 +55,11 @@ RSpec.describe 'Products API', type: :request do
     # valid payload
     let(:valid_attributes) do
       { name: 'Toothbrush', url: 'www.google.com',
-        producer: 'Google', current_price: 50 }
+        producer: 'Google', current_price: 50 }.to_json
     end
 
     context 'when the request is valid' do
-      before { post '/products', params: valid_attributes }
+      before { post '/products', params: valid_attributes, headers: headers }
 
       it 'creates a product' do
         expect(json['name']).to eq('Toothbrush')
@@ -70,7 +71,7 @@ RSpec.describe 'Products API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/products', params: { email: 'Foobar' } }
+      before { post '/products', params: { email: 'Foobar' }.to_json, headers: headers }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -87,11 +88,11 @@ RSpec.describe 'Products API', type: :request do
   describe 'PUT /products/:id' do
     let(:valid_attributes) do
       { name: 'Shopping', url: 'www.google.com',
-        producer: 'Google', current_price: '£100' }
+        producer: 'Google', current_price: '£100' }.to_json
     end
 
     context 'when the record exists' do
-      before { put "/products/#{product_id}", params: valid_attributes }
+      before { put "/products/#{product_id}", params: valid_attributes, headers: headers }
 
       it 'updates the record' do
         expect(response.body).to be_empty
@@ -105,7 +106,7 @@ RSpec.describe 'Products API', type: :request do
 
   # Test suite for DELETE /products/:id
   describe 'DELETE /products/:id' do
-    before { delete "/products/#{product_id}" }
+    before { delete "/products/#{product_id}", headers: headers }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)

@@ -61,7 +61,6 @@ RSpec.describe 'WishLists API', type: :request do
       before { post '/wish_lists', params: valid_attributes, headers: headers }
 
       it 'creates a wish_list' do
-        puts json
         expect(json['name']).to eq('Learn Elm')
       end
 
