@@ -2,7 +2,6 @@
 
 # controller for wish lists
 module V1
-
   class WishListsController < ApplicationController
     before_action :set_wish_list, only: %i[show update destroy]
 
